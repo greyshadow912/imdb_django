@@ -13,9 +13,11 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+
+
 def search_movie(request):
 
-    movie = request.GET.get('q', '')
+    movie = request.GET.get('q','')
     error, status, movie_list = SearchResults.get_search_movies(movie)
 
     if error:
@@ -23,8 +25,8 @@ def search_movie(request):
         return HttpResponse(data,
                             content_type='application/json',
                             status=status)
-    paginator = Paginator(movie_list, 15)
-    page = request.GET.get(page)
+    paginator = Paginator(movie_list, 25)
+    page = request.GET.get('page')
 
     try:
         movies = paginator.page(page)

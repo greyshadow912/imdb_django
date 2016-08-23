@@ -9,26 +9,25 @@ from bs4 import BeautifulSoup
 
 def get_search_movies(movie):
 
-    url = 'http://imdb.com/find' + movie
-
+    url = "http://www.imdb.com/find?s=tt&q=" + movie
     try:
         r = requests.get(url)
     except requests.exceptions.RequestException as e:
         logging.info(e)
         traceback.print_exc(e)
         json_object = {}
-        json_object['error'] ="Service Unavailable"
+        json_object['error'] = "Service Unavailable"
         tup = (True, 503, json_object)
         return tup
 
     soup = BeautifulSoup(r.content, 'html.parser')
     movies = soup.find_all("td", {"class": "result_text"})
 
-    json_array = {}
+    json_array = []
 
-    if len(movies) == 0 :
+    if len(movies) == 0:
         json_object = {}
-        json_object['error'] = "no results find"
+        json_object['error'] = "no results found"
         tup = (True, 404, json_object)
         return tup
 
@@ -36,9 +35,9 @@ def get_search_movies(movie):
         if item is not None:
             title = item.get_text().strip()
             url = item.find("a").get("href")
-            movie_id = url[9:18]
+            movie_id = url[7:16]
 
-        url = 'http://.imdb.com' +url
+        url = 'http://imdb.com' +url
         json_object= {}
         json_object['title'] = title
         json_object['url'] = url
@@ -49,10 +48,10 @@ def get_search_movies(movie):
     return tup
 
 def get_movie_results(movie_id):
-    url = 'http://imdb.com/title/' + movie_id
+    url = "http://www.imdb.com/title/" + movie_id
 
     try:
-        r= requests.get(url)
+        r = requests.get(url)
     except requests.exceptions.RequestException as e :
         logging.info(e)
         traceback.print_exc(e)
@@ -62,8 +61,7 @@ def get_movie_results(movie_id):
         return tup
 
     soup = BeautifulSoup(r.content, 'html.parser')
-    movie_details = soup.find("div", {"class": "plot summary"})
-    json_array = {}
+    movie_details = soup.find("div", {"class": "plot_summary"})
 
     if movie_details is None:
         json_object = {}
