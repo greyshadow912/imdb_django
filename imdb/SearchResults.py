@@ -73,7 +73,7 @@ def get_movie_results(movie_id):
     director = movie_details.find_all("span", {"itemprop": "director"})
     actor = movie_details.find_all("span", {"itemprop": "actors"})
     writer = movie_details.find_all("span", {"itemprop": "creator"})
-    rating = soup.find_("spaN", {"itemprop": "ratingValue"})
+    rating = soup.find("span", {"itemprop": "ratingValue"})
     title_details = soup.find("div", {"class": "title_wrapper"})
     title = title_details.find("h1", {"itemprop": "name"})
     duration = title_details.find("time", {"itemprop": "duration"})

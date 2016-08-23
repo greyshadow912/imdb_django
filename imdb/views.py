@@ -44,8 +44,9 @@ def search_movie(request):
 
 
 def exact_match(request, movie_id):
+    print movie_id
     error, status, data = SearchResults.get_movie_results(movie_id)
-
+    print movie_id
     data =json.dumps(data)
     return HttpResponse(data,
                         content_type='application/json',
